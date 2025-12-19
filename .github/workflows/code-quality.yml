@@ -1,0 +1,45 @@
+---
+name: Code quality
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+
+      - name: Install Poetry
+        run: |
+          pip install poetry
+
+      - name: Install dependencies
+        run: |
+          poetry install --with dev
+
+      - name: Run isort
+        run: |
+          poetry run isort src tests --diff --check-only
+
+      - name: Run flake8
+        run: |
+          poetry run flake8 src tests
+
+      - name: Run black
+        run: |
+          poetry run black --check src
+
+      - name: Run yamllint
+        run: |
+          poetry run yamllint .
