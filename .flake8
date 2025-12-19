@@ -1,0 +1,53 @@
+[flake8]
+inline-quotes = single
+max-line-length = 120
+max-complexity = 9
+show-source = True
+statistics = True
+ignore =
+    D100
+    D101
+    D102
+    D103
+    D104
+    D106
+    D107
+    D200
+    D204
+    D413
+    E262
+    W504
+    CCE001
+    #  Temporary we allow to write TODOs to fix them before real production rollout
+    T101
+per-file-ignores=
+    tests/*.py:
+        A003
+        D205
+        DAR101
+        DAR201
+    tests/generic/test_database.py:
+        B017
+        D205
+    */schemas.py:
+        A002
+        A003
+    */models.py:
+        A003
+    */controllers.py:
+        A002
+    src/database.py:
+        B902
+    src/generic/database.py:
+        DAR101
+        DAR003
+class_attributes_order =
+    field,
+    meta_class,
+    nested_class,
+    magic_method,
+    property_method,
+    static_method,
+    class_method,
+    method,
+    private_method

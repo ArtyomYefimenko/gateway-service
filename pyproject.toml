@@ -1,0 +1,55 @@
+[project]
+name = "gateway-service"
+version = "0.1.0"
+description = "Gateway microservcie"
+authors = [
+    {name = "aefimenko"}
+]
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "fastapi (>=0.124.4,<0.125.0)",
+    "uvicorn[standard] (>=0.38.0,<0.39.0)",
+    "aiohttp (>=3.13.2,<4.0.0)",
+    "pyjwt (>=2.10.1,<3.0.0)",
+    "pydantic (>=2.12.5,<3.0.0)",
+    "pydantic-settings (>=2.12.0,<3.0.0)"
+]
+
+
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+[dependency-groups]
+dev = [
+    "isort (>=7.0.0,<8.0.0)",
+    "autoflake (>=2.3.1,<3.0.0)",
+    "autopep8 (>=2.3.2,<3.0.0)",
+    "black (>=25.12.0,<26.0.0)",
+    "alembic (>=1.17.2,<2.0.0)",
+    "flake8 (>=7.3.0,<8.0.0)",
+    "yamllint (>=1.37.1,<2.0.0)"
+]
+
+
+[tool.black]
+target-version = ["py313"]
+line-length = 120
+skip-string-normalization = true
+include = '\.pyi?$'
+exclude = '''
+(
+  /(
+      \.eggs
+    | \.git
+    | \.tox
+    | \.venv
+    | venv
+    | _build
+    | buck-out
+    | build
+    | dist
+  )/
+)
+'''
