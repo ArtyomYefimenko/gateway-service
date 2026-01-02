@@ -64,4 +64,4 @@ The session is gracefully closed on application shutdown.
 
 ```bash
 # Inside infrastructure folder
-docker-compose up
+make run

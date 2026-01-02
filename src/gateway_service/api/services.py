@@ -12,10 +12,10 @@ router = APIRouter(tags=['Services API'])
 
 
 @router.api_route('/payments/callback/{rest_of_path:path}', methods=['POST', 'GET'])
-async def payments_callback(request: Request, version: str, rest_of_path: str):
+async def payments_callback(request: Request, rest_of_path: str):
     # payment providers do not know about our jwt token
     service = request.app.state.payment_service
-    proxied_path = f'/callback/{rest_of_path}'
+    proxied_path = f'callback/{rest_of_path}'
 
     logger.info('Proxying payment callback to %s', proxied_path)
 
