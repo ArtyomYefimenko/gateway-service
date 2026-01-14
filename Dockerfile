@@ -5,7 +5,7 @@ ENV PYTHONPATH="${PYTHONPATH}:/gateway-service/src"
 
 WORKDIR /gateway-service
 
-RUN apt-get update && apt-get install -y build-essential \
+RUN apt-get update && apt-get install -y build-essential curl \
     && rm -rf /var/lib/apt/lists/
 
 RUN python3 -m pip install --upgrade pip \

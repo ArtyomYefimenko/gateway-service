@@ -1,5 +1,4 @@
 import logging
-import time
 
 import aiohttp
 import jwt
@@ -27,7 +26,6 @@ class BaseGatewayService:
     """
 
     base_url: str
-    allowed_jwt_fields: set = {'user_id', 'role'}
 
     def __init__(self, session: aiohttp.ClientSession):
         self.session = session
@@ -38,15 +36,23 @@ class BaseGatewayService:
         """
 
         try:
-            payload = jwt.decode(auth_token, settings.jwt_secret, algorithms=['HS256'])
+            payload = jwt.decode(
+                auth_token,
+                settings.jwt_secret,
+                algorithms=['HS256'],
+                options={
+                    'require': ['exp', 'iat', 'sub', 'jti', 'iss'],
+                    'verify_exp': True,
+                },
+            )
+        except jwt.ExpiredSignatureError:
+            raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail='JWT expired')
         except jwt.PyJWTError:
             raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail='Invalid JWT token')
 
-        created_at = int(payload.get('timestamp', 0))
-        if created_at < time.time() - settings.jwt_expire_time:
-            raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail='JWT expired')
-
-        return {k: str(v) for k, v in payload.items() if k in self.allowed_jwt_fields}
+        return {
+            'X-User-Id': str(payload['sub']),
+        }
 
     async def proxy(
         self,
@@ -61,6 +67,7 @@ class BaseGatewayService:
 
         headers = dict(request.headers)
         headers.pop('host', None)
+        headers.pop('X-User-Id', None)
 
         credentials = await security(request)
         auth_token = credentials.credentials if credentials else None

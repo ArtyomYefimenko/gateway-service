@@ -63,7 +63,7 @@ def create_application() -> FastAPI:
     Returns:
         The application as `FastAPI`.
     """
-    app = FastAPI(debug=settings.debug, lifespan=lifespan)
+    app = FastAPI(debug=settings.debug, lifespan=lifespan, docs_url=None, redoc_url=None, openapi_url=None)
     app.add_middleware(GZipMiddleware, minimum_size=500, compresslevel=4)
     app.add_middleware(
         CORSMiddleware,
@@ -72,13 +72,6 @@ def create_application() -> FastAPI:
         allow_methods=['*'],
         allow_headers=['*'],
     )
-
-    # remove standard docs routes
-    for path in ['/openapi.json', '/docs', '/redoc']:
-        for route in list(app.routes):
-            if route.path == path:
-                app.routes.remove(route)
-                break
 
     router = APIRouter()
     router.include_router(docs_router)

@@ -22,21 +22,16 @@ Internally, requests are proxied to the corresponding microservices.
 
 ## Routing Examples
 
+- `/auth/api/v1/...` → Auth Service
 - `/products/api/v1/...` → Product Service
 - `/orders/api/v1/...` → Order Service
-- `/payments/api/v1/...` → Payment Service
-- `/auth/api/v1/...` → Auth Service
+- `/payments/callback/...` → Payment Service
 
 The gateway trims service-specific prefixes before forwarding requests, so internal services keep clean `/api/v1/...` routes.
 
 ## API Documentation
 
-API documentation for each internal service is also available via Gateway endpoints:
-
-- `/products/docs` – Product Service API documentation
-- `/orders/docs` – Order Service API documentation
-- `/payments/docs` – Payment Service API documentation
-- `/auth/docs` – Auth Service API documentation
+API documentation for each internal service is available via the `/docs` endpoint by choosing the required service.
 
 ## Tech Stack
 
@@ -62,6 +57,7 @@ The session is gracefully closed on application shutdown.
 
 ## Running Locally
 
+To start the services locally, navigate to the `infrastructure` directory and run:
+
 ```bash
-# Inside infrastructure folder
-docker-compose up
+make run
