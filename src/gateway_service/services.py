@@ -72,10 +72,10 @@ class BaseGatewayService:
         credentials = await security(request)
         auth_token = credentials.credentials if credentials else None
 
-        if auth_required and not auth_token:
-            raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail='JWT token required')
+        if auth_required:
+            if not auth_token:
+                raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail='JWT token required')
 
-        if auth_token:
             headers.update(await self._build_auth_headers(auth_token))
 
         try:

@@ -10,7 +10,7 @@ from pydantic_settings import (
 
 class Settings(BaseSettings):
     debug: bool = False
-    jwt_secret: str = 'jwt_secret'
+    jwt_secret: str = 'jwt_secret'  # should match the secret in auth-service
 
     auth_service_url: str = 'http://auth-service:8000'
     product_service_url: str = 'http://product-service:8000'
